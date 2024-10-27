@@ -1,0 +1,10 @@
+<div class="container py-5">
+  <%= render 'searches/form' %>
+
+  <h2>主催者一覧</h2>
+  <ul>
+    <% @organizers.each do |o| %>
+      <li><%= link_to o.name, organizers_organizer_path(o) %></li>
+    <% end %>
+  </ul>
+</div>

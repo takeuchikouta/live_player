@@ -1,0 +1,13 @@
+<div class="container py-5">
+  <h2>お気に入りイベント</h2>
+  <% if @bookmarks.blank? %>
+    <p>
+      お気に入りイベント登録がされていません。
+    </p>
+  <% end %>
+  <ul>
+    <% @bookmarks.each do |bookmark| %>
+      <li><%= link_to bookmark.event.name, applicants_event_path(bookmark.event) %></li>
+    <% end %>
+  </ul>
+</div>

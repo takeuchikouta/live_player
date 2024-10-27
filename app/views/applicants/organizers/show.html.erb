@@ -1,0 +1,30 @@
+<div class="container py-5">
+  <h2 class="mb-3">
+    主催者詳細
+  </h2>
+
+  <div class="mb-3">
+    <%= image_tag @organizer.get_organizer_avatar(300, 300), class: 'img-fluid' %>
+  </div>
+
+  <div class="mb-3">
+    <h3>主催中のイベント</h3>
+    <ul>
+      <% @organizer.events.each do |event| %>
+        <li>
+          <%= link_to event.name, applicants_event_path(event) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <h3>主催者名</h3>
+    <%= @organizer.name %>
+  </div>
+
+   <div class="mb-3">
+    <h3>プロフィール</h3>
+    <%= simple_format(@organizer.introduction, sanitize: true, class: 'm-0') %>
+   </div>
+</div>

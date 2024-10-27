@@ -1,0 +1,67 @@
+<div class="container py-5">
+  <div class="mb-3">
+    <h2>主催者</h2>
+    <%= link_to @event.organizer.name, organizers_organizer_path(@event.organizer) %>
+  </div>
+
+  <div class="mb-3">
+    <%= image_tag @event.get_image(100, 100) %>
+  </div>
+
+  <% if @event.organizer == current_organizer %>
+    <div class="mb-3">
+      <%= link_to 'イベントの編集', edit_organizers_event_path(@event) %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <h2>イベント名</h2>
+    <%= @event.name %>
+  </div>
+
+  <div class="mb-3">
+    <h2>イベント詳細</h2>
+    <%= simple_format(@event.description, sanitize: true, class: 'm-0') %>
+  </div>
+
+  <div class="mb-3">
+    <h3>イベント参加者</h3>
+    <% if @event.event_entries.present? %>
+      <ul>
+        <% @event.event_entries.each do |event_entry| %>
+          <li>
+            <%= link_to event_entry.applicant.name, applicants_applicant_path(event_entry.applicant) %>
+            <ul>
+              <li>
+                <%= simple_format(event_entry.text, sanitize: true, class: 'm-0') %>
+                <% if event_entry.event.organizer == current_organizer %>
+                  <div>
+                    <%= link_to '参加表明を取り消す', organizers_event_event_entry_path(@event, event_entry), method: :delete, data: {confirm: '本当に取り消しますか？'} %>
+                  </div>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>現在参加表明した人はいません。</p>
+    <% end %>
+  </div>
+
+  <hr>
+
+    <p>コメント件数：<%= @event.event_comments.count %></p>
+
+    <% @event.event_comments.each do |event_comment| %>
+      <div>
+        <%= event_comment.created_at.strftime('%Y/%m/%d') %>
+        <%= simple_format(event_comment.comment, sanitize: true, class: 'm-0') %>
+        <% if event_comment.applicant == current_applicant %>
+          <%= link_to "削除", applicants_event_event_comment_path(event_comment.event, event_comment), method: :delete %>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

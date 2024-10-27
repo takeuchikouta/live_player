@@ -1,0 +1,41 @@
+<div class="container py-5">
+
+
+  <% if @applicant == current_applicant %>
+    <h2 class="mb-3">
+      マイページ（応募者）
+    </h2>
+    <div class="mb-5">
+      <%= link_to 'プロフィール編集', edit_applicants_applicant_path(current_applicant) %>
+    </div>
+  <% else %>
+    <h2>
+      参加者ページ
+    </h2>
+  <% end %>
+
+  <div class="mb-3">
+    <%= image_tag @applicant.get_profile_image(300, 300), class: 'img-fluid' %>
+  </div>
+
+  <div class="mb-3">
+    <h3>参加予定イベント</h3>
+    <ul>
+      <% @applicant.event_entries.each do |event_entry| %>
+        <li>
+          <%= link_to event_entry.event.name, applicants_event_path(event_entry.event) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <h3>ユーザー名</h3>
+    <%= @applicant.name %>
+  </div>
+
+   <div class="mb-3">
+    <h3>プロフィール</h3>
+    <%= simple_format(@applicant.introduction, sanitize: true, class: 'm-0') %>
+   </div>
+</div>

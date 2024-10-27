@@ -1,0 +1,2 @@
+module Applicants::OrganizersHelper
+end

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LivePlayer</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <%= link_to 'Live Player',root_path, class: 'navbar-brand logo' %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <% if organizer_signed_in? %>
+            <li class="nav-item">
+              <%= link_to 'マイページ', organizers_organizer_path(current_organizer), class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '主催者一覧', organizers_organizers_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '参加者一覧', organizers_applicants_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'イベント一覧', organizers_events_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'イベントの主催', new_organizers_event_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_organizer_session_path, class: 'nav-link', method: :delete %>
+            </li>
+          <% elsif applicant_signed_in? %>
+            <li class="nav-item">
+              <%= link_to 'マイページ', applicants_applicant_path(current_applicant), class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'お気に入り', applicants_bookmarks_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '主催者一覧', applicants_organizers_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '参加者一覧', applicants_applicants_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'イベント一覧', applicants_events_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_applicant_session_path, class: 'nav-link', method: :delete %>
+            </li>
+          <% elsif admin_signed_in? %>
+            <li class="nav-item">
+              <%= link_to '主催者一覧', admins_organizers_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '参加者一覧', admins_applicants_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'イベント一覧', admins_events_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_admin_session_path, class: 'nav-link', method: :delete %>
+            </li>
+          <% else %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ログイン
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%= link_to '主催者', new_organizer_session_path, class: 'dropdown-item' %>
+                <%= link_to '参加者', new_applicant_session_path, class: 'dropdown-item' %>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                新規登録
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%= link_to '主催者', new_organizer_registration_path, class: 'dropdown-item' %>
+                <%= link_to '参加者', new_applicant_registration_path, class: 'dropdown-item' %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <% if alert %>
+    <div class="container pt-5">
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if notice %>
+    <div class="container pt-5">
+      <div class="alert alert-warning" role="alert">
+        <%= notice %>
+      </div>
+    </div>
+  <% end %>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

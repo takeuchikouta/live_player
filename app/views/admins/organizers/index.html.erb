@@ -1,0 +1,17 @@
+<div class="container py-5">
+  <h2>主催者一覧</h2>
+  <ul>
+    <% @organizers.each do |o| %>
+      <li>
+        <%= o.name %>
+        <div>
+          <% if o.is_active %>
+            <%= link_to '<span class="text-danger">退会させる</span>'.html_safe, admins_organizer_path(o), method: :patch, data: {confirm: '退会させますか？'} %>
+          <% else %>
+            <%= link_to '<span class="text-primary">復活させる</span>'.html_safe, admins_organizer_path(o), method: :patch, data: {confirm: '復活させますか？'} %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

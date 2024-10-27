@@ -1,0 +1,90 @@
+<div class="container py-5">
+  <div class="mb-3">
+    <h2>主催者</h2>
+    <%= link_to @event.organizer.name, root_path %>
+  </div>
+
+  <div class="mb-3">
+    <h2>イベント名</h2>
+    <%= @event.name %>
+  </div>
+
+  <div class="mb-3">
+    <% if Bookmark.bookmarked?(current_applicant, @event) %>
+      <%= link_to 'お気に入りにする', applicants_event_bookmarks_path(@event), method: :post %>
+    <% else %>
+      <%= link_to 'お気に入りを解除する', applicants_event_bookmarks_path(@event), method: :delete %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <h2>イベント詳細</h2>
+    <%= simple_format(@event.description, sanitize: true, class: 'm-0') %>
+  </div>
+
+  <div class="mb-3">
+    <h3>イベント参加者</h3>
+    <% if @event.event_entries.present? %>
+      <ul>
+        <% @event.event_entries.each do |event_entry| %>
+          <li>
+            <%= link_to event_entry.applicant.name, applicants_applicant_path(event_entry.applicant) %>
+            <ul>
+              <li>
+                <%= simple_format(event_entry.text, sanitize: true, class: 'm-0') %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>現在参加表明した人はいません。</p>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <h3>イベントに参加表明</h3>
+    <% if EventEntry.entry?(@event, current_applicant) %>
+      <%= link_to 'エントリー取り消し',
+                  applicants_event_event_entries_path(@event),
+                  method: :delete,
+                  class: 'btn btn-danger',
+                  data: {confirm: '参加表明を取り消しますか？'}
+      %>
+    <% else %>
+      <%= form_with model: @event_entry, url: applicants_event_event_entries_path(@event), method: :post do |f| %>
+        <div class="form-group">
+          <%= f.text_area :text, rows: '2', placeholder: "意気込みをここに", class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "参加表明！" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <div class="mb-3">
+    <h2>コメント</h2>
+    </div>
+      <%= form_with model: @event_comment, url:applicants_event_event_comments_path(@event), method: :post do |f| %>
+        <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+        <%= f.submit "送信する" %>
+      <% end %>
+    <div>
+
+    <p>コメント件数：<%= @event.event_comments.count %></p>
+
+    <% @event.event_comments.each do |event_comment| %>
+      <div>
+        <%= event_comment.created_at.strftime('%Y/%m/%d') %>
+        <%= simple_format(event_comment.comment, sanitize: true, class: 'm-0') %>
+        <% if event_comment.applicant == current_applicant %>
+          <%= link_to "削除", applicants_event_event_comment_path(event_comment.event, event_comment), method: :delete %>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

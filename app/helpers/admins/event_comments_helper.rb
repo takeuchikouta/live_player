@@ -1,0 +1,2 @@
+module Admins::EventCommentsHelper
+end

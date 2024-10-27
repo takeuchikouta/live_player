@@ -1,0 +1,2 @@
+module Applicants::EventCommentsHelper
+end

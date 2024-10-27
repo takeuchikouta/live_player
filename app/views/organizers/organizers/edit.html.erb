@@ -1,0 +1,21 @@
+<div class="container py-5">
+  <h2>プロフィール編集</h2>
+
+  <%= form_with model: @organizer, url: organizers_organizer_path(current_organizer), method: :patch do |f| %>
+
+    <div class="form-group">
+      <%= f.label :name, 'ユーザー名' %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :introduction, 'プロフィール' %>
+      <%= f.text_area :introduction, rows: '5', class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit "更新", class: 'btn btn-secondary' %>
+    </div>
+
+  <% end %>
+</div>

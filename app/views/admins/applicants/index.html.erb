@@ -1,0 +1,17 @@
+<div class="container py-5">
+  <h2>参加者一覧</h2>
+  <ul>
+    <% @applicants.each do |a| %>
+      <li>
+        <%= a.name %>
+        <div>
+          <% if a.is_active %>
+            <%= link_to '<span class="text-danger">退会させる</span>'.html_safe, admins_applicant_path(a), method: :patch, data: {confirm: '退会させますか？'} %>
+          <% else %>
+            <%= link_to '<span class="text-primary">復活させる</span>'.html_safe, admins_applicant_path(a), method: :patch, data: {confirm: '復活させますか？'} %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

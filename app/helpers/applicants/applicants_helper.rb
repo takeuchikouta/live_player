@@ -1,0 +1,2 @@
+module Applicants::ApplicantsHelper
+end

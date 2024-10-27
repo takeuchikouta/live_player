@@ -1,0 +1,65 @@
+<div class="container py-5">
+  <% if @organizer == current_organizer %>
+    <h2 class="mb-3">
+      マイページ(主催者）
+    </h2>
+    <div class="mb-3">
+      <%= link_to 'プロフィール編集', edit_organizers_organizer_path(current_organizer) %>
+    </div>
+    <div class="mb-5">
+    <%= link_to 'イベントを主催する', new_organizers_event_path %>
+    </div>
+  <% else %>
+    <h2>
+      主催者ページ
+    </h2>
+  <% end %>
+
+  <div class="mb-3">
+    <%= image_tag @organizer.get_organizer_avatar(300, 300), class: 'img-fluid' %>
+  </div> <!-- この行に閉じタグを追加 -->
+
+  <div class="mb-3">
+    <h3>参加予定イベント</h3>
+  </div>
+
+  <div class="mb-3">
+    <h3>ユーザー名</h3>
+    <%= @organizer.name %>
+  </div>
+
+  <div class="mb-3">
+    <h3>プロフィール</h3>
+    <%= simple_format(@organizer.introduction, sanitize: true, class: 'm-0') %>
+  </div>
+
+  <div>
+    <% @organizer.events.each do |event| %>
+      <div class="mb-3">
+        <div>
+          <%= image_tag event.get_image(100, 100) %>
+        </div>
+        <div>
+          <%= event.name %>
+        </div>
+        <div>
+          <%= simple_format(event.description, sanitize: true, class: 'm-0') %>
+        </div>
+        <div>
+          <%= link_to organizers_event_path(event.id) do %>
+            詳細
+          <% end %>
+        </div>
+        <% if event.organizer == current_organizer %>
+          <div>
+            <%= link_to edit_organizers_event_path(event.id) do %>
+              編集
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %> <!-- each ループの閉じタグ -->
+  </div>
+</div>
+
+

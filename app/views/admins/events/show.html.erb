@@ -1,0 +1,78 @@
+<div class="container py-5">
+  <div class="mb-3">
+    <h2>主催者</h2>
+    <%= link_to @event.organizer.name, applicants_organizer_path(@event.organizer) %>
+  </div>
+
+  <div class="mb-3">
+    <%= image_tag @event.get_image(100, 100) %>
+  </div>
+
+  <% if @event.organizer == current_organizer %>
+    <div class="mb-3">
+      <%= link_to 'イベントの編集', edit_organizers_event_path(@event) %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <h2>イベント名</h2>
+    <%= @event.name %>
+  </div>
+
+  <div class="mb-3">
+    <h2>イベント詳細</h2>
+    <%= simple_format(@event.description, sanitize: true, class: 'm-0') %>
+  </div>
+
+  <div class="mb-3">
+    <h3>イベント参加者</h3>
+    <% if @event.event_entries.present? %>
+      <ul>
+        <% @event.event_entries.each do |event_entry| %>
+          <li>
+            <%= link_to event_entry.applicant.name, applicants_applicant_path(event_entry.applicant) %>
+            <ul>
+              <li>
+                <%= simple_format(event_entry.text, sanitize: true, class: 'm-0') %>
+                <div>
+                  <%= link_to '参加表明を取り消す', admins_event_event_entry_path(@event, event_entry), method: :delete, data: {confirm: '本当に取り消しますか？'} %>
+                </div>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>現在参加表明した人はいません。</p>
+    <% end %>
+  </div>
+  <div>
+   <%= link_to 'イベントを削除する', admins_event_path(@event), method: :delete, data: {confirm: '本当に取り消しますか？'} %>
+  </div>
+  <div>
+    <% if applicant_signed_in? %>
+      <%= form_with model: @event_comment, url: applicants_event_event_comments_path(@event), method: :post do |f| %>
+        <div class="form-group">
+          <%= f.text_area :comment, rows: 5, placeholder: "コメントをここに", class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "送信する", class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <hr>
+
+    <p>コメント件数：<%= @event.event_comments.count %></p>
+
+    <% @event.event_comments.each do |event_comment| %>
+      <div>
+        <%= event_comment.created_at.strftime('%Y/%m/%d') %>
+        <%= simple_format(event_comment.comment, sanitize: true, class: 'm-0') %>
+        <%= link_to "削除", admins_event_event_comment_path(@event, event_comment), method: :delete %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

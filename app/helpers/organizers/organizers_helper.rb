@@ -1,0 +1,2 @@
+module Organizers::OrganizersHelper
+end

@@ -1,0 +1,72 @@
+<div class="container py-5">
+
+
+  <% if @applicant == current_applicant %>
+    <h2 class="mb-3">
+      マイページ（応募者）
+    </h2>
+    <div class="mb-5">
+      <%= link_to 'プロフィール編集', edit_applicants_applicant_path(current_applicant) %>
+    </div>
+  <% else %>
+    <h2>
+      参加者ページ
+    </h2>
+  <% end %>
+
+  <div class="mb-3">
+    <% unless @applicant == current_applicant %>
+      <%# フォロー済みかどうか確認する %>
+      <%# following?は、Userモデルで定義しており、見つからない場合はnilが戻る %>
+      <% if @applicant.following?(current_applicant, @applicant.id).nil? %>
+        <%# フォローする : follows#create %>
+        <%# TODO: current_userをここで渡すと勝手に追加されるため、フォロー対象のユーザーの情報のみ渡す %>
+        <%= link_to 'Follow', applicants_follows_path(follow_id: @applicant.id), method: :post %>
+      <% else %>
+        <%# フォローを外す : follows#destroy %>
+        <%# TODO: current_userをここで渡すと勝手に削除されるため、フォロー対象のユーザーをidで渡す %>
+        <%= link_to 'UnFollow', applicants_follow_path(@applicant.id), method: :delete %>
+      <% end %>
+    <% end %>
+    <h3>フォロー</h3>
+    <ul>
+      <% @applicant.followed(@applicant).each do |follow| %>
+        <li>
+          <%= link_to follow.applicant.name, applicants_applicant_path(follow.applicant) %>
+        </li>
+      <% end %>
+    </ul>
+
+    <h3>フォロワー</h3>
+    <ul>
+      <% Applicant.where(id: @applicant.follower(@applicant).pluck(:follow_id)).each do |follower| %>
+        <li>
+          <%= link_to follower.name, applicants_applicant_path(follower) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <%= image_tag @applicant.get_profile_image(300, 300), class: 'img-fluid' %>
+  <div class="mb-3">
+    <h3>参加予定イベント</h3>
+    <ul>
+      <% @applicant.event_entries.each do |event_entry| %>
+        <li>
+          <%= link_to event_entry.event.name, applicants_event_path(event_entry.event) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <h3>ユーザー名</h3>
+    <%= @applicant.name %>
+  </div>
+
+   <div class="mb-3">
+    <h3>プロフィール</h3>
+    <%= simple_format(@applicant.introduction, sanitize: true, class: 'm-0') %>
+   </div>
+</div>

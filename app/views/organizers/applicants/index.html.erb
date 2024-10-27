@@ -1,0 +1,10 @@
+<div class="container py-5">
+  <%= render 'searches/form' %>
+
+  <h2>参加者一覧</h2>
+  <ul>
+    <% @applicants.each do |a| %>
+      <li><%= link_to a.name, organizers_applicant_path(a) %></li>
+    <% end %>
+  </ul>
+</div>

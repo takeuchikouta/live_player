@@ -1,0 +1,59 @@
+<div class="container py-5">
+  <h2>検索結果</h2>
+  <ul>
+    <li>
+      <a href="#events">イベント検索結果</a>
+    </li>
+    <li>
+      <a href="#applicants">参加者検索結果</a>
+    </li>
+    <li>
+      <a href="#organizer">主催者検索結果</a>
+    </li>
+  </ul>
+
+  <div id="events">
+    <h3>イベント検索結果</h3>
+    <ul>
+      <% @events.each do |event| %>
+        <li>
+          <% if applicant_signed_in? %>
+            <%= link_to event.name, applicants_event_path(event) %>
+          <% else %>
+            <%= link_to event.name, organizers_event_path(event) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div id="applicants">
+    <h3>参加者検索結果</h3>
+    <ul>
+      <% @applicants.each do |applicant| %>
+        <li>
+          <% if applicant_signed_in? %>
+            <%= link_to applicant.name, applicants_applicants_path(applicant) %>
+          <% else %>
+            <%= link_to applicant.name, organizers_applicants_path(applicant) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div id="organizers">
+    <h3>主催者検索結果</h3>
+    <ul>
+      <% @organizers.each do |organizer| %>
+        <li>
+          <% if applicant_signed_in? %>
+            <%= link_to organizer.name, applicants_organizer_path(organizer) %>
+          <% else %>
+            <%= link_to organizer.name, organizers_organizer_path(organizer) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
