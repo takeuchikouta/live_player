@@ -8,6 +8,8 @@ class Applicant < ApplicationRecord
   has_many :event_comments, dependent: :destroy
   has_many :follows, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  
+  validates :name, presence: true, uniqueness: true
 
   has_one_attached :profile_image
 

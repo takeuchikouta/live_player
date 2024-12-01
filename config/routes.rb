@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
   devise_for :admins
-  devise_for :organizers
-  devise_for :applicants
+  # devise_for :organizers
+  devise_for :organizers, controllers: {
+        sessions: 'organizers/sessions',
+        registrations: 'organizers/registrations'
+      }
+  # devise_for :applicants
+  devise_for :applicants, controllers: {
+        sessions: 'applicants/sessions',
+        registrations: 'applicants/registrations'
+      }
+      
   devise_scope :applicant do
     post "applicants/guest_sign_in", to: "applicants/sessions#guest_sign_in"
   end

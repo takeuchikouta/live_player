@@ -30,7 +30,7 @@
       <ul>
         <% @event.event_entries.each do |event_entry| %>
           <li>
-            <%= link_to event_entry.applicant.name, applicants_applicant_path(event_entry.applicant) %>
+            <%= link_to event_entry.applicant.name, organizers_applicant_path(event_entry.applicant) %>
             <ul>
               <li>
                 <%= simple_format(event_entry.text, sanitize: true, class: 'm-0') %>

@@ -6,6 +6,8 @@ class Organizer < ApplicationRecord
 
   has_many :events, dependent: :destroy
 
+  validates :name, presence: true, uniqueness: true
+  
   has_one_attached :organizer_avatar
 
   def get_organizer_avatar(width, height)

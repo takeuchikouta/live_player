@@ -17,6 +17,7 @@ class DeviseCreateOrganizers < ActiveRecord::Migration[6.1]
       t.string :name, null: false
       t.text :introduction, null: false
       t.boolean :is_active, default: true
+      
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false
